@@ -1,0 +1,25 @@
+name: Docker Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Create .env file
+      run: |
+        echo "APP_MESSAGE=${{ secrets.APP_MESSAGE }}" >> .env
+        echo "APP_HEALTH=${{ secrets.APP_HEALTH }}" >> .env
+
+    - name: Confirm .env created
+      run: cat .env
+
+    - name: Build Docker container
+      run: docker compose build
